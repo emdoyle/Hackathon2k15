@@ -12,7 +12,7 @@ public class Board {
 			operators[i] = ' ';
 		}
 
-		currentIndex = 0;
+		currentIndex = -1;
 		startNum = start;
 		endNum = end;
 	}
@@ -31,13 +31,14 @@ public class Board {
 			return false;
 		}
 
-		operators[currentIndex] = operator;
 		currentIndex++;
+		operators[currentIndex] = operator;
+
 		return true;
 	}
 
 	public void deleteBlock() {
-		if (currentIndex != 0) {
+		if (currentIndex != -1) {
 			operators[currentIndex] = ' ';
 			currentIndex--;
 		}
@@ -60,15 +61,15 @@ public class Board {
 
 	public boolean evaluate() {
 		int total = 0;
-		if (Arrays.asList(operators).contains(' ')) {
+		if (currentIndex < (operators.length-1)) {
 			System.err.println("Board not filled");
 			return false;
 		}
 
 		else {
-			total += evalOperator(startNum, 1, operators[0]);
+			total = evalOperator(startNum, 1, operators[0]);
 			for (int i = 0; i < operators.length-1; i++) {
-				total += evalOperator(total, 1, operators[i]);
+				total = evalOperator(total, 1, operators[i]);
 			}
 		}
 
@@ -80,8 +81,4 @@ public class Board {
 		System.err.println("Incorrect answer!");
 		return false;
 	}
-
-
-
-
 }
