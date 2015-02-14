@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Board {
 	char[] operators;
 	int currentIndex;
@@ -40,6 +42,46 @@ public class Board {
 			currentIndex--;
 		}
 	}
+
+	public int evalOperator(int valOne, int valTwo, char operator) {
+
+		switch (operator) {
+			case '+':
+				return valOne + valTwo;
+			case '-':
+				return valOne - valTwo;
+			case '*':
+				return valOne * valTwo;
+			case '/':
+				return valOne / valTwo;
+		}
+		return 0;
+	}
+
+	public boolean evaluate() {
+		int total = 0;
+		if (Arrays.asList(operators).contains(' ')) {
+			System.err.println("Board not filled");
+			return false;
+		}
+
+		else {
+			total += evalOperator(startNum, 1, operators[0]);
+			for (int i = 0; i < operators.length-1; i++) {
+				total += evalOperator(total, 1, operators[i]);
+			}
+		}
+
+		if (total == endNum) {
+			System.err.println("Puzzle solved!");
+			return true;
+		}
+
+		System.err.println("Incorrect answer!");
+		return false;
+	}
+
+
 
 
 }
