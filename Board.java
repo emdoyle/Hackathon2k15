@@ -1,4 +1,3 @@
-import java.util.Arrays;
 
 public class Board {
 	char[] operators;
@@ -67,18 +66,20 @@ public class Board {
 		}
 
 		else {
-			total = evalOperator(startNum, 1, operators[0]);
-			for (int i = 0; i < operators.length-1; i++) {
+			total = startNum;
+			System.out.println(total);
+			for (int i = 0; i < operators.length; i++) {
 				total = evalOperator(total, 1, operators[i]);
+				System.out.println(total);
 			}
 		}
 
 		if (total == endNum) {
-			System.err.println("Puzzle solved!");
+			System.out.println("Puzzle solved!");
 			return true;
 		}
 
-		System.err.println("Incorrect answer!");
+		System.out.println("Incorrect answer!");
 		return false;
 	}
 }
