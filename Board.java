@@ -1,14 +1,14 @@
 
 public class Board {
-	char[] operators;
+	Block[] blocks;
 	int currentIndex;
 	int startNum;
 	int endNum;
 
 	public Board(int start, int end, int size) {
-		operators = new char[size];
-		for (int i = 0; i < operators.length; i++) {
-			operators[i] = ' ';
+		blocks = new Block[size];
+		for (int i = 0; i < blocks.length; i++) {
+			blocks[i] = new Block(' ', true);
 		}
 
 		currentIndex = -1;
@@ -18,27 +18,27 @@ public class Board {
 
 	public void printBoard() {
 		System.out.print("| " + startNum + " | ");
-		for (int i = 0; i < operators.length; i++) {
-			System.out.print(operators[i] + " | ");
+		for (int i = 0; i < blocks.length; i++) {
+			System.out.print(blocks[i].getOperator() + " | ");
 		}
 		System.out.println(endNum + " |");
 	}
 
 	public boolean addBlock(char operator) {
-		if (currentIndex >= operators.length) {
+		if (currentIndex >= blocks.length-1) {
 			System.err.println("Error: full board!");
 			return false;
 		}
 
 		currentIndex++;
-		operators[currentIndex] = operator;
+		blocks[currentIndex].setUpBlock(operator);
 
 		return true;
 	}
 
 	public void deleteBlock() {
 		if (currentIndex != -1) {
-			operators[currentIndex] = ' ';
+			blocks[currentIndex].setEmpty(true);
 			currentIndex--;
 		}
 	}
@@ -60,7 +60,7 @@ public class Board {
 
 	public boolean evaluate() {
 		int total = 0;
-		if (currentIndex < (operators.length-1)) {
+		if (currentIndex < (blocks.length-1)) {
 			System.err.println("Board not filled");
 			return false;
 		}
@@ -68,8 +68,8 @@ public class Board {
 		else {
 			total = startNum;
 			System.out.println(total);
-			for (int i = 0; i < operators.length; i++) {
-				total = evalOperator(total, 1, operators[i]);
+			for (int i = 0; i < blocks.length; i++) {
+				total = evalOperator(total, 1, blocks[i].getOperator());
 				System.out.println(total);
 			}
 		}
