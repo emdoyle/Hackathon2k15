@@ -26,14 +26,14 @@ public class Controller{
 			puzzle.displayPuzzle();
 
 			/* Print the bag from which to draw from */
-			/*System.out.println("Select Operator from current Bag: ");
-			puzzle.puzzleBag.printBag();*/
+			System.out.println("Select Operator from current Bag: ");
+			puzzle.puzzleBag.printBag();
 
 			/* Receive user input for operator */
 			char chosenOperator = input.next().charAt(0);
 
 			/* Error check */
-			/*if (!puzzle.puzzleBag.checkBag(chosenOperator)) {
+			if (!puzzle.puzzleBag.checkBag(chosenOperator)) {
 				System.err.println("Operator not in bag!");
 				continue;
 			}
@@ -43,7 +43,7 @@ public class Controller{
 			int chosenBoard = input.nextInt();
 
 			/* Error check */
-			/*if (chosenBoard < 0 || chosenBoard > 2 || puzzle.subArr[chosenBoard].isFull()) {
+			if (chosenBoard < 0 || chosenBoard > 2 || puzzle.subArr[chosenBoard].isFull()) {
 				System.err.println("Invalid board!");
 				continue;
 			}

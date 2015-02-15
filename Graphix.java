@@ -70,7 +70,6 @@ public class Graphix extends JPanel implements MouseListener{
 		g.drawRect(x, y, 95, 100);
 		if(!b.isEmpty()){
 			drawOperator(b.getOperator(), x, y, g);
-			System.out.println("Tried to draw an operator on a new block");
 		}
 		
 	}
@@ -130,30 +129,65 @@ public class Graphix extends JPanel implements MouseListener{
 		g.setFont(new Font("SansSerif", Font.BOLD, 100));
 		g.drawString("+", x + 20, y + 80);
 	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		System.out.println("Mouse Clicked");
-		Point p = e.getPoint();
+	
+	private boolean operatorIsClicked(Point p){
 		if(p.getY() >= 450){
 			for(int i = 0; i < operatorBag.getCharBag().length; i++){
 				if(p.getX() >= 50 + 100*i && p.getX() <= 50 + 100*(i+1)){
 					currSelectedOperator = operatorBag.getCharBag()[i];
+					return true;
 				}
 			}
-		}else if(p.getY() >= 150 && p.getY() <= 250){
+		}
+		return false;
+	}
+	
+	private boolean positionIsClicked(Point p){
+		if(p.getY() >= 150 && p.getY() <= 250){
 			for(int j = 0; j < singleBoard.blocks.length; j++){
 				if(p.getX() >= (j+1)*(510/(singleBoard.blocks.length + 1)) - 47 + 120 &&
 						p.getX() <= (j+2)*(510/(singleBoard.blocks.length + 1)) - 47 + 120){
 					positionOnSingleBoard = j;
+					return true;
 				}
 			}
 		}
-		if(currSelectedOperator != ' ' && positionOnSingleBoard != 4){
+		return false;
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		Point p = e.getPoint();
+		
+		//has an operator selected
+		if(currSelectedOperator != ' ' && positionIsClicked(p)){
+			singleBoard.addBlock(currSelectedOperator, positionOnSingleBoard);
+			operatorBag.deleteItem(currSelectedOperator);
+			currSelectedOperator = ' ';
+			positionOnSingleBoard = 4;
+		}else if(currSelectedOperator == ' '){
+			if(p.getY() >= 450){
+				for(int i = 0; i < operatorBag.getCharBag().length; i++){
+					if(p.getX() >= 50 + 100*i && p.getX() <= 50 + 100*(i+1)
+							&& operatorBag.getBagDisplay()[i]){
+						currSelectedOperator = operatorBag.getCharBag()[i];
+					}
+				}
+			}else if(p.getY() >= 150 && p.getY() <= 250){
+				for(int j = 0; j < singleBoard.blocks.length; j++){
+					if(p.getX() >= (j+1)*(510/(singleBoard.blocks.length + 1)) - 47 + 120 &&
+							p.getX() <= (j+2)*(510/(singleBoard.blocks.length + 1)) - 47 + 120){
+						positionOnSingleBoard = j;
+					}
+				}
+			}
+		}
+		
+		/*if(currSelectedOperator != ' ' && positionOnSingleBoard != 4){
 			singleBoard.addBlock(currSelectedOperator, positionOnSingleBoard);
 			currSelectedOperator = ' ';
 			positionOnSingleBoard = 4;
-		}
+		}*/
 		
 		if(singleBoard.evaluate()){
 			System.out.println("Congrats!");
