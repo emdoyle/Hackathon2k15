@@ -23,10 +23,10 @@ public class Controller {
 		board.printBoard();
 		sb2.printBoard();*/
 
-		Board board = new Board(10, 12, 4);
+		Board board = new Board(10, 9, 3);
 		Scanner input = new Scanner(System.in);
-		char[] operators = {'+', '-', '+', '+'};
-		boolean[] bools = {true, true, true, true};
+		char[] operators = {'+', '-', '-'};
+		boolean[] bools = {true, true, true};
 		Bag bag = new Bag(operators, bools);
 		boolean success = false;
 
@@ -48,7 +48,7 @@ public class Controller {
 				continue;
 			}
 
-			System.out.print("Now select a location from 1 to ");
+			System.out.print("Select a location from 1 to ");
 			System.out.println(board.blocks.length);
 			
 			int chosenLocation = input.nextInt();
@@ -57,7 +57,6 @@ public class Controller {
 
 			board.addBlock(chosenOperator, chosenLocation-1);
 
-			System.out.println("Removing an instance");
 			bag.removeNextInstance(chosenOperator);
 
 			if (board.isFull()) {

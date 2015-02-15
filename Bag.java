@@ -1,3 +1,6 @@
+/*
+ * Filename: Bag.java
+ * Description: Holds the 'bag' of operators to be chosen for the solution */
 
 public class Bag {
 	private char[] charBag;
@@ -9,6 +12,7 @@ public class Bag {
 		this.bagDisplay = bagDisplay;
 	}
 	
+	/* prints the bag, checking the boolean array for empty values */
 	public void printBag(){
 		for(int i = 0; i < charBag.length; i++){
 			if(i != 0 && bagDisplay[i]){
@@ -23,12 +27,14 @@ public class Bag {
 		}
 	}
 	
+	/* resets all the boolean values to true, for displaying */
 	public void resetBag(){
 		for(int i = 0; i < bagDisplay.length; i++){
 			bagDisplay[i] = true;
 		}
 	}
 
+	/* checks to see if that operator is in the bag */
 	public boolean checkBag(char operator) {
 		for (int i = 0; i < charBag.length; i++) {
 			if (charBag[i] == operator && bagDisplay[i]) return true;
@@ -36,6 +42,7 @@ public class Bag {
 		return false;
 	}
 
+	/* removes the next instance of an operator */
 	public void removeNextInstance(char operator) {
 		for (int i = 0; i < charBag.length; i++) {
 			if (charBag[i] == operator && bagDisplay[i]) {
@@ -45,13 +52,15 @@ public class Bag {
 		}
 	}
 
+	/* gets the index for a certain operator */
 	public int getIndexAtItem(char operator) {
 		for (int i = 0; i < charBag.length; i++) {
-			if (charBag[i] == operator) return i;
+			if (charBag[i] == operator && bagDisplay[i]) return i;
 		}
 		return 0;
 	}
 
+	/* delete the items */
 	public void deleteItem(char operator) {
 		bagDisplay[getIndexAtItem(operator)] = false;
 	}
