@@ -28,6 +28,33 @@ public class Bag {
 			bagDisplay[i] = true;
 		}
 	}
+
+	public boolean checkBag(char operator) {
+		for (int i = 0; i < charBag.length; i++) {
+			if (charBag[i] == operator && bagDisplay[i]) return true;
+		}
+		return false;
+	}
+
+	public void removeNextInstance(char operator) {
+		for (int i = 0; i < charBag.length; i++) {
+			if (charBag[i] == operator && bagDisplay[i]) {
+				deleteItem(operator);
+				break;
+			}
+		}
+	}
+
+	public int getIndexAtItem(char operator) {
+		for (int i = 0; i < charBag.length; i++) {
+			if (charBag[i] == operator) return i;
+		}
+		return 0;
+	}
+
+	public void deleteItem(char operator) {
+		bagDisplay[getIndexAtItem(operator)] = false;
+	}
 	
 	public char[] getCharBag(){
 		return charBag;

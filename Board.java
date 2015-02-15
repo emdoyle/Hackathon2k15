@@ -7,6 +7,7 @@ public class Board {
 	Block[] blocks;
 	int startNum;
 	int endNum;
+	int boardSize;
 
 	/* Board constructor initializes an array of empty blocks into every space */
 	public Board(int start, int end, int size) {
@@ -17,6 +18,7 @@ public class Board {
 
 		startNum = start;
 		endNum = end;
+		boardSize = size;
 	}
 
 	/* check if block[] is empty */
@@ -97,7 +99,7 @@ public class Board {
 	public boolean evaluate() {
 		int total = 0;
 		if (!isFull()) {
-			System.err.println("Board not filled!");
+			// System.err.println("Board not filled!");
 			return false;
 		}
 
