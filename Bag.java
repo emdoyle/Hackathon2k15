@@ -1,3 +1,4 @@
+import java.util.Random;
 /*
  * Filename: Bag.java
  * Description: Holds the 'bag' of operators to be chosen for the solution */
@@ -49,6 +50,16 @@ public class Bag {
 				deleteItem(operator);
 				break;
 			}
+		}
+	}
+
+	public void scramble() {
+		Random rand = new Random();
+		for (int i = charBag.length-1; i > 0; i--) {
+			int index = rand.nextInt(i+1);
+			char a = charBag[index];
+			charBag[index] = charBag[i];
+			charBag[i] = a;
 		}
 	}
 

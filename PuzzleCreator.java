@@ -14,6 +14,7 @@ public class PuzzleCreator {
 	private SubBoard[] subBoardArray;
 	private int SBcounter = 0;//counts number of subBoards
 	private int solution = 0;
+	private boolean hasSquared = false;
 	
 	private Random rgen = new Random();
 	
@@ -38,7 +39,7 @@ public class PuzzleCreator {
 				subBoardArray[1].evaluateResult(),
 				operatorArray[0]);
 		//now we have a second-level input
-		createSubBoard(nextInput, rgen.nextInt(4));//create subBoard on second-level input
+		createSubBoard(nextInput, rgen.nextInt(2)+1);//create subBoard on second-level input
 		
 		solution = subBoardArray[2].evaluateResult();
 	}
@@ -90,11 +91,14 @@ public class PuzzleCreator {
 			return '|';
 		}
 
-		else if (randNum < 9) {
+		else if (randNum < 9 && !hasSquared) {
+			hasSquared = true;
 			return '^';
 		}
 
-		else return ' ';
+		else {
+			return getRandomOperator();
+		}
 	}
 
 	private char getSubBoardOperator(){

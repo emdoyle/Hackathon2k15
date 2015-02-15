@@ -68,6 +68,7 @@ public class Controller {
 		boolean success = false;
 		Scanner input = new Scanner(System.in);
 		Bag bag = pc.getSolutionBag();
+		bag.scramble();
 
 		sb[0].resetBoard();
 		sb[1].resetBoard();
