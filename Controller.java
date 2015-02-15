@@ -12,11 +12,12 @@ public class Controller {
 		/* creates a new instance of 'puzzle' */
 		Puzzle puzzle = new Puzzle();
 		
+		/*
 		JFrame window = new JFrame();
 		Graphix g = new Graphix(puzzle);
 		window.setContentPane(g);
 		window.setSize(800, 600);
-		window.setVisible(true);
+		window.setVisible(true);*/
 
 		while (!success) {
 
@@ -32,7 +33,7 @@ public class Controller {
 
 			/* Error check */
 			if (!puzzle.puzzleBag.checkBag(chosenOperator)) {
-				System.err.println("Operator not in bag!");
+				System.err.println("\nOperator not in bag!\n");
 				continue;
 			}
 
@@ -42,7 +43,7 @@ public class Controller {
 
 			/* Error check */
 			if (chosenBoard < 0 || chosenBoard > 2 || puzzle.subArr[chosenBoard].isFull()) {
-				System.err.println("Invalid board!");
+				System.err.println("\nInvalid board!\n");
 				continue;
 			}
 
@@ -52,7 +53,7 @@ public class Controller {
 
 			/* Error check */
 			if (chosenLocation < 0 || chosenLocation >= puzzle.subArr[chosenBoard].blocks.length) {
-				System.err.println("Location out of bounds!");
+				System.err.println("\nLocation out of bounds!\n");
 				continue;
 			}
 
@@ -70,8 +71,8 @@ public class Controller {
 				if (!success) {
 					puzzle.puzzleBag.resetBag();
 					puzzle.resetAllBoards();
-					System.out.println("Incorrect answer!");
-					System.out.println("-----------------");
+					System.out.println("\nIncorrect answer!");
+					System.out.println("-----------------\n");
 				} else {
 					/* print boards */
 					puzzle.displayPuzzle();

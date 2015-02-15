@@ -23,13 +23,12 @@ public class PuzzleCreator {
 		randomizeOperators();
 		subBoardArray = new SubBoard[(NUM_INPUTS*2)-1];
 		for(int i = 0; i < NUM_INPUTS; i++){ //loops through inputs and creates subBoards
-			createSubBoard(inputArray[i], rgen.nextInt(2)+1);
+			createSubBoard(inputArray[i], rgen.nextInt(1)+1);
 			//subBoard has length up to (not including) 4
 		}
 
 		/* account for divide by zero */
 		while (subBoardArray[1].evaluateResult() == 0) {
-			
 			SubBoard newBoard = new SubBoard(subBoardArray[1].startNum, 0, subBoardArray[1].boardSize);
 			newBoard = randomizeBoard(newBoard, subBoardArray[1].boardSize);
 			subBoardArray[1] = newBoard;
@@ -39,7 +38,7 @@ public class PuzzleCreator {
 				subBoardArray[1].evaluateResult(),
 				operatorArray[0]);
 		//now we have a second-level input
-		createSubBoard(nextInput, rgen.nextInt(2)+1);//create subBoard on second-level input
+		createSubBoard(nextInput, rgen.nextInt(1)+1);//create subBoard on second-level input
 		
 		solution = subBoardArray[2].evaluateResult();
 	}
