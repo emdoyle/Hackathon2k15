@@ -1,14 +1,22 @@
 import java.util.Scanner;
 
+import javax.swing.JFrame;
+
 public class Controller {
 	public static void main(String[] args) {
-
+		
 		/* 'success' instantiated to false -- becomes true upon success */
 		boolean success = false;
 		Scanner input = new Scanner(System.in);
 
 		/* creates a new instance of 'puzzle' */
 		Puzzle puzzle = new Puzzle();
+		
+		JFrame window = new JFrame();
+		Graphix g = new Graphix(puzzle);
+		window.setContentPane(g);
+		window.setSize(800, 600);
+		window.setVisible(true);
 
 		while (!success) {
 
