@@ -96,7 +96,7 @@ public class Puzzle {
 		return finalBoardLength;
 	}
 
-	public int getTheOperator() {
+	public char getTheOperator() {
 		return theOperator;
 	}
 

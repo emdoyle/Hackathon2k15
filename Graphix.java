@@ -6,35 +6,60 @@ import javax.swing.*;
 //controls the GUI of the game
 
 public class Graphix extends JPanel implements MouseListener{
-	private Container contentPane;
-	private JPanel bagPanel;
 	private Bag operatorBag;
+	private JFrame window;
 	
+	private int numMoves = 0;
 	private char currSelectedOperator = ' ';
 	private int positionOnSingleBoard = 4;
 	private boolean drawingSingleBoard;
 	private boolean drawingSubBoard;
 	private Board singleBoard;
-	private SubBoard subBoard1, subBoard2, subBoard3;
 	private boolean restart = false;
+	private boolean won = false;
+	private boolean isPainted = false;
+	private int levelCounter = 0;
 	
-	public Graphix(Puzzle p){
-		
+	private Board[] boards = {new Board(4, 6, 2), new Board(20, 2, 1), new Board(19, 2, 2)};
+	char[] arr1 = {'+', '+'};
+	char[] arr2 = {'|'};
+	char[] arr3 = {'|', '+'};
+	boolean[] bool1 = {true, true};
+	boolean[] bool2 = {true};
+	boolean[] bool3 = {true, true};
+	private Bag[] bags = {new Bag(arr1, bool1), new Bag(arr2, bool2),
+			new Bag(arr3, bool3)};
+	private String[] textArray = {
+			"Squares marked with a '+' add 1 to your current total.",
+			"You can also add multiple squares in a row.",
+			"The patented slice operator slices off the ones digit.",
+			"Sometimes there's more than one solution!"
+	};
+	
+	
+	public Graphix(Board board, Bag bag){
+		window = new JFrame();
+		window.setContentPane(this);
+		window.setSize(800, 600);
+		window.setVisible(true);
 		addMouseListener(this);
-		//operatorBag = p.puzzleBag;
-		//operatorBag.scramble();
-		char[] charArr = {'+', '-', '-'};
-		boolean[] boolArr = {true, true, true};
-		operatorBag = new Bag(charArr, boolArr);
+		operatorBag = bag;
 		setSize(800, 600);
 		
-		singleBoard = new Board(10, 11, 3);
+		singleBoard = board;
 		drawBoard(singleBoard);
 		
 	}
 	
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
+		g.setFont(new Font("SansSerif", Font.BOLD, 25));
+		g.drawString("Moves: " + numMoves, 350, 50);
+		if(!isPainted){
+			g.setFont(new Font("SansSerif", Font.BOLD, 24));
+			g.drawString(textArray[levelCounter], 50, 300);
+			isPainted = true;
+		}
 		//draws the operators in the bag
 		for(int i = 0; i < operatorBag.getCharBag().length; i++){
 			if(operatorBag.getBagDisplay()[i]){
@@ -60,10 +85,6 @@ public class Graphix extends JPanel implements MouseListener{
 			g.drawRect(605, 150, 95, 100);
 			g.setFont(new Font("SansSerif", Font.BOLD, 45));
 			g.drawString("" + singleBoard.endNum, 630, 200);
-		}
-		
-		if(drawingSubBoard){
-			
 		}
 	}
 	
@@ -164,17 +185,33 @@ public class Graphix extends JPanel implements MouseListener{
 		Point p = e.getPoint();
 		
 		if(restart){
-			operatorBag.resetBag();
 			singleBoard.resetBoard();
 			currSelectedOperator = ' ';
 			positionOnSingleBoard = 4;
+			restart = false;
+			if(won){
+				numMoves = 0;	
+				clearAll();
+				if(levelCounter < 3){
+					singleBoard = boards[levelCounter];
+					drawingSingleBoard = true;
+					operatorBag = bags[levelCounter];
+					levelCounter++;
+					isPainted = false;
+				}else if(levelCounter == 3){
+					window.setVisible(false);
+					window.dispose();
+					new GraphixTwo(new Puzzle());
+				}
+			}
 		}else{
 			//has an operator selected
 			if(currSelectedOperator != ' ' && positionIsClicked(p)){
-				singleBoard.addBlock(currSelectedOperator, positionOnSingleBoard);
+				if(singleBoard.addBlock(currSelectedOperator, positionOnSingleBoard)){
+				numMoves++;
 				operatorBag.deleteItem(currSelectedOperator);
 				currSelectedOperator = ' ';
-				positionOnSingleBoard = 4;
+				positionOnSingleBoard = 4;}
 			}else if(currSelectedOperator == ' '){
 				if(p.getY() >= 450){
 					for(int i = 0; i < operatorBag.getCharBag().length; i++){
@@ -197,6 +234,7 @@ public class Graphix extends JPanel implements MouseListener{
 			if(singleBoard.evaluate()){
 				System.out.println("Congrats!");
 				restart = true;
+				won = true;
 			}else if(singleBoard.isFull()){
 				System.out.println("Next Time.");
 				restart = true;
@@ -236,23 +274,6 @@ public class Graphix extends JPanel implements MouseListener{
 		drawingSingleBoard = true;
 		singleBoard = b;
 	}
-
-	public void drawSubBoardArray(SubBoard[] b) {
-		for(int i = 0; i < b.length; i++){
-			drawSubBoard(i, b[i]);
-		}
-	}
-	
-	private void drawSubBoard(int num, SubBoard sb){
-		drawingSubBoard = true;
-		if(num == 0){
-			subBoard1 = sb;
-		}else if(num == 1){
-			subBoard2 = sb;
-		}else if(num == 2){
-			subBoard3 = sb;
-		}
-	}
 	
 	public char getCurrSelectedOperator(){
 		return currSelectedOperator;
@@ -260,6 +281,18 @@ public class Graphix extends JPanel implements MouseListener{
 	
 	public int getPositionOnSingleBoard(){
 		return positionOnSingleBoard;
+	}
+	
+	private void clearAll(){
+		
+		numMoves = 0;
+		currSelectedOperator = ' ';
+		positionOnSingleBoard = 4;
+		drawingSingleBoard = false;
+
+		singleBoard.resetBoard();
+		restart = false;
+		won = false;
 	}
 	
 }

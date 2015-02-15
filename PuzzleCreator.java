@@ -23,7 +23,7 @@ public class PuzzleCreator {
 		randomizeOperators();
 		subBoardArray = new SubBoard[(NUM_INPUTS*2)-1];
 		for(int i = 0; i < NUM_INPUTS; i++){ //loops through inputs and creates subBoards
-			createSubBoard(inputArray[i], rgen.nextInt(2)+1);
+			createSubBoard(inputArray[i], 2);
 			//subBoard has length up to (not including) 4
 		}
 
