@@ -1,9 +1,15 @@
+/*
+ * Filename: Block.java
+ * Description: Contains all info related to "blocks" which are the operators */
+
 public class Block {
 
+	/* color: for gui; empty: to determine if the block has been instantiated */
 	private String color;
 	private char operator;
 	private boolean empty;
 	
+	/* constructor sets the block to empty by default */
 	public Block(char operator, boolean empty){
 		setUpBlock(operator);
 		setEmpty(empty);
@@ -21,6 +27,7 @@ public class Block {
 		return operator;
 	}
 	
+	/* combined operator setter and color setter */
 	public void setUpBlock(char newOperator){
 		operator = newOperator;
 		empty = false;

@@ -3,140 +3,70 @@ import java.util.Scanner;
 public class Controller {
 	public static void main(String[] args) {
 
-		/*
-		Board board = new Board(4, 2, 3);
-		Scanner input = new Scanner(System.in);
-		char[] operators = {'|', '^', '+'};
-		boolean[] bools = {true, true, true};
-		Bag bag = new Bag(operators, bools);
+		/* 'success' instantiated to false -- becomes true upon success */
 		boolean success = false;
+		Scanner input = new Scanner(System.in);
+
+		/* creates a new instance of 'puzzle' */
+		Puzzle puzzle = new Puzzle();
 
 		while (!success) {
-			board.printBoard();
-			System.out.println("Select Operator from current Bag: ");
-			bag.printBag();
 
+			/* print puzzle */
+			puzzle.displayPuzzle();
+
+			/* Print the bag from which to draw from */
+			System.out.println("Select Operator from current Bag: ");
+			puzzle.puzzleBag.printBag();
+
+			/* Receive user input for operator */
 			char chosenOperator = input.next().charAt(0);
 
-			if (!bag.checkBag(chosenOperator)) {
-				System.err.println("Invalid input!");
-				continue;
-			}
-
-			if (!bag.checkBag(chosenOperator)) {
+			/* Error check */
+			if (!puzzle.puzzleBag.checkBag(chosenOperator)) {
 				System.err.println("Operator not in bag!");
 				continue;
 			}
 
-			System.out.print("Select a location from 1 to ");
-			System.out.println(board.blocks.length);
-			
-			int chosenLocation = input.nextInt();
-
-			if (chosenLocation < 1 || chosenLocation > board.blocks.length) continue;
-
-			board.addBlock(chosenOperator, chosenLocation-1);
-
-			bag.removeNextInstance(chosenOperator);
-
-			if (board.isFull()) {
-				success = board.evaluate();
-				if (!success) {
-					bag.resetBag();
-					board.resetBoard();
-					System.out.println("-----------------");
-				} else board.printBoard();
-			}
-		}*/
-
-		
-		PuzzleCreator pc = new PuzzleCreator();
-		SubBoard[] sb = pc.getSubBoards();
-		/*sb[0].printBoard();
-		System.out.println("----------");
-		sb[2].printBoard();
-		sb[1].printBoard();
-*/
-
-/*
-		Board board = new Board(4, 2, 3);
-		Scanner input = new Scanner(System.in);
-		char[] operators = {'|', '^', '+'};
-		boolean[] bools = {true, true, true};
-		Bag bag = new Bag(operators, bools);*/
-
-		boolean success = false;
-		Scanner input = new Scanner(System.in);
-		Bag bag = pc.getSolutionBag();
-		bag.scramble();
-
-		sb[0].resetBoard();
-		sb[1].resetBoard();
-		sb[2].resetBoard();
-
-		while (!success) {
-			/* print boards */
-			sb[0].printBoard();
-			System.out.print("----------------");
-			System.out.print("| " + pc.getOperator() + " | ");
-			sb[2].printOnlyEnd(pc.getSolution());
-			sb[1].printBoard();
-
-			System.out.println("Select Operator from current Bag: ");
-			bag.printBag();
-
-			char chosenOperator = input.next().charAt(0);
-
-			if (!bag.checkBag(chosenOperator)) {
-				System.err.println("Invalid input!");
-				continue;
-			}
-
-			if (!bag.checkBag(chosenOperator)) {
-				System.err.println("Operator not in bag!");
-				continue;
-			}
-
+			/* Receive user input for which board */
 			System.out.println("Select a board: ");
-
 			int chosenBoard = input.nextInt();
 
-			if (chosenBoard < 0 || chosenBoard > 2 || sb[chosenBoard].isFull()) {
+			/* Error check */
+			if (chosenBoard < 0 || chosenBoard > 2 || puzzle.subArr[chosenBoard].isFull()) {
 				System.err.println("Invalid board!");
 				continue;
 			}
 
+			/* Receive user input for which location */
 			System.out.print("Select a location: ");
-			
 			int chosenLocation = input.nextInt();
 
-			if (chosenLocation < 0 || chosenLocation >= sb[chosenBoard].blocks.length) {
+			/* Error check */
+			if (chosenLocation < 0 || chosenLocation >= puzzle.subArr[chosenBoard].blocks.length) {
 				System.err.println("Location out of bounds!");
 				continue;
 			}
 
-			if (!sb[chosenBoard].addBlock(chosenOperator, chosenLocation)) {
+			/* Error check */
+			if (!puzzle.subArr[chosenBoard].addBlock(chosenOperator, chosenLocation)) {
 				continue;
 			}
 
-			bag.removeNextInstance(chosenOperator);
+			/* Remove the next instance of that operator */
+			puzzle.puzzleBag.removeNextInstance(chosenOperator);
 
-			if (sb[0].isFull() && sb[1].isFull() && sb[2].isFull()) {
-				success = sb[2].evaluateResult() == pc.getSolution();
+			/* Only check for success when everything is full */
+			if (puzzle.isPuzzleFull()) {
+				success = puzzle.isCorrect();
 				if (!success) {
-					bag.resetBag();
-					sb[0].resetBoard();
-					sb[1].resetBoard();
-					sb[2].resetBoard();
+					puzzle.puzzleBag.resetBag();
+					puzzle.resetAllBoards();
 					System.out.println("Incorrect answer!");
 					System.out.println("-----------------");
 				} else {
 					/* print boards */
-					sb[0].printBoard();
-					System.out.print("----------------");
-					System.out.print("| " + pc.getOperator() + " | ");
-					sb[2].printOnlyEnd(pc.getSolution());
-					sb[1].printBoard();
+					puzzle.displayPuzzle();
 					System.out.println("Puzzle solved!");
 				}	
 			}

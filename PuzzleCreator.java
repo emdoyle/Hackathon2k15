@@ -76,6 +76,7 @@ public class PuzzleCreator {
 		return 0;
 	}
 	
+	/* selects an operator based on random selection */
 	private char getRandomOperator(){
 		int randNum = rgen.nextInt(9);
 		
@@ -96,11 +97,13 @@ public class PuzzleCreator {
 			return '^';
 		}
 
+		/* recursive call to find a non squared operator */
 		else {
 			return getRandomOperator();
 		}
 	}
 
+	/* finds the operator for 2 subboards to execute */
 	private char getSubBoardOperator(){
 		int randNum = rgen.nextInt(4);
 		
@@ -118,6 +121,7 @@ public class PuzzleCreator {
 		}
 	}
 	
+	/* finds an operator randomly */
 	private void randomizeOperators(){
 		char[] arr = new char[NUM_INPUTS-1];
 
@@ -141,6 +145,7 @@ public class PuzzleCreator {
 		SBcounter++;
 	}
 	
+	/* returns the actual solution to the problem */
 	public int getSolution(){
 		return solution;
 	}
@@ -149,6 +154,7 @@ public class PuzzleCreator {
 		return subBoardArray;
 	}
 	
+	/* returns the bag of operators needed for the solution */
 	public Bag getSolutionBag(){
 		int totalSize = subBoardArray[0].boardSize +
                 subBoardArray[1].boardSize +
@@ -158,9 +164,11 @@ public class PuzzleCreator {
 		for(int j = 0; j < 3; j++){
 			for(int i = 0; i < subBoardArray[j].boardSize; i++){
 				solnBag[iterator] = subBoardArray[j].blocks[i].getOperator();
+				// System.out.println(solnBag[iterator]);
 				iterator++;
 			}
 		}
+		/* creates the boolean array filled with true values */
 		boolean[] solnDisplayArray = new boolean[totalSize];
 		for(int w = 0; w < totalSize; w++){
 			solnDisplayArray[w] = true;
