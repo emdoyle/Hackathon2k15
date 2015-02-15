@@ -16,13 +16,14 @@ public class Graphix extends JPanel implements MouseListener{
 	private boolean drawingSubBoard;
 	private Board singleBoard;
 	private SubBoard subBoard1, subBoard2, subBoard3;
+	private boolean restart = false;
 	
 	public Graphix(Puzzle p){
 		
 		addMouseListener(this);
 		//operatorBag = p.puzzleBag;
 		//operatorBag.scramble();
-		char[] charArr = {'+', '+', '-'};
+		char[] charArr = {'+', '-', '-'};
 		boolean[] boolArr = {true, true, true};
 		operatorBag = new Bag(charArr, boolArr);
 		setSize(800, 600);
@@ -55,6 +56,7 @@ public class Graphix extends JPanel implements MouseListener{
 			
 			}
 			//draw last one
+			g.setColor(Color.BLACK);
 			g.drawRect(605, 150, 95, 100);
 			g.setFont(new Font("SansSerif", Font.BOLD, 45));
 			g.drawString("" + singleBoard.endNum, 630, 200);
@@ -66,11 +68,13 @@ public class Graphix extends JPanel implements MouseListener{
 	}
 	
 	private void drawBlock(Block b, int x, int y, Graphics g){
-		
-		g.drawRect(x, y, 95, 100);
+		//g.setColor(b.getColor());
+		//g.drawRect(x, y, 95, 100);
 		if(!b.isEmpty()){
+			g.setColor(b.getColor());
 			drawOperator(b.getOperator(), x, y, g);
-		}
+		}else{ g.setColor(Color.BLACK);}
+		g.drawRect(x, y, 95, 100);
 		
 	}
 	
@@ -159,40 +163,44 @@ public class Graphix extends JPanel implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		Point p = e.getPoint();
 		
-		//has an operator selected
-		if(currSelectedOperator != ' ' && positionIsClicked(p)){
-			singleBoard.addBlock(currSelectedOperator, positionOnSingleBoard);
-			operatorBag.deleteItem(currSelectedOperator);
+		if(restart){
+			operatorBag.resetBag();
+			singleBoard.resetBoard();
 			currSelectedOperator = ' ';
 			positionOnSingleBoard = 4;
-		}else if(currSelectedOperator == ' '){
-			if(p.getY() >= 450){
-				for(int i = 0; i < operatorBag.getCharBag().length; i++){
-					if(p.getX() >= 50 + 100*i && p.getX() <= 50 + 100*(i+1)
-							&& operatorBag.getBagDisplay()[i]){
-						currSelectedOperator = operatorBag.getCharBag()[i];
+		}else{
+			//has an operator selected
+			if(currSelectedOperator != ' ' && positionIsClicked(p)){
+				singleBoard.addBlock(currSelectedOperator, positionOnSingleBoard);
+				operatorBag.deleteItem(currSelectedOperator);
+				currSelectedOperator = ' ';
+				positionOnSingleBoard = 4;
+			}else if(currSelectedOperator == ' '){
+				if(p.getY() >= 450){
+					for(int i = 0; i < operatorBag.getCharBag().length; i++){
+						if(p.getX() >= 50 + 100*i && p.getX() <= 50 + 100*(i+1)
+								&& operatorBag.getBagDisplay()[i]){
+							currSelectedOperator = operatorBag.getCharBag()[i];
+						}
 					}
-				}
-			}else if(p.getY() >= 150 && p.getY() <= 250){
-				for(int j = 0; j < singleBoard.blocks.length; j++){
-					if(p.getX() >= (j+1)*(510/(singleBoard.blocks.length + 1)) - 47 + 120 &&
-							p.getX() <= (j+2)*(510/(singleBoard.blocks.length + 1)) - 47 + 120){
-						positionOnSingleBoard = j;
+				}else if(p.getY() >= 150 && p.getY() <= 250){
+					for(int j = 0; j < singleBoard.blocks.length; j++){
+						if(p.getX() >= (j+1)*(510/(singleBoard.blocks.length + 1)) - 47 + 120 &&
+								p.getX() <= (j+2)*(510/(singleBoard.blocks.length + 1)) - 47 + 120){
+							positionOnSingleBoard = j;
+						}
 					}
 				}
 			}
-		}
 		
-		/*if(currSelectedOperator != ' ' && positionOnSingleBoard != 4){
-			singleBoard.addBlock(currSelectedOperator, positionOnSingleBoard);
-			currSelectedOperator = ' ';
-			positionOnSingleBoard = 4;
-		}*/
 		
-		if(singleBoard.evaluate()){
-			System.out.println("Congrats!");
-		}else if(singleBoard.isFull()){
-			System.out.println("Next Time.");
+			if(singleBoard.evaluate()){
+				System.out.println("Congrats!");
+				restart = true;
+			}else if(singleBoard.isFull()){
+				System.out.println("Next Time.");
+				restart = true;
+			}
 		}
 		
 		repaint();
