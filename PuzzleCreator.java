@@ -101,4 +101,23 @@ public class PuzzleCreator {
 	public SubBoard[] getSubBoards(){
 		return subBoardArray;
 	}
+	
+	public Bag getSolutionBag(){
+		int totalSize = subBoardArray[0].boardSize +
+                subBoardArray[1].boardSize +
+                subBoardArray[2].boardSize;
+		char[] solnBag = new char[totalSize];
+		int iterator = 0;
+		for(int j = 0; j < 3; j++){
+			for(int i = 0; i < subBoardArray[j].boardSize; i++){
+				solnBag[iterator] = subBoardArray[j].blocks[i].getOperator();
+				iterator++;
+			}
+		}
+		boolean[] solnDisplayArray = new boolean[totalSize];
+		for(int w = 0; w < totalSize; w++){
+			solnDisplayArray[w] = true;
+		}
+		return new Bag(solnBag, solnDisplayArray);
+	}
 }
