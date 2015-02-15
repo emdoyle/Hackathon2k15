@@ -1,8 +1,10 @@
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
 
-public class Controller {
+public class Controller{
 	public static void main(String[] args) {
 		
 		/* 'success' instantiated to false -- becomes true upon success */
@@ -18,26 +20,20 @@ public class Controller {
 		window.setSize(800, 600);
 		window.setVisible(true);
 		
-		g.drawBoard(new Board(10, 11, 3));
-
 		while (!success) {
 
 			/* print puzzle */
-			//puzzle.displayPuzzle();
+			puzzle.displayPuzzle();
 
 			/* Print the bag from which to draw from */
 			/*System.out.println("Select Operator from current Bag: ");
 			puzzle.puzzleBag.printBag();*/
 
 			/* Receive user input for operator */
-			//char chosenOperator = input.next().charAt(0);
-			char chosenOperator = ' ';
-			while(chosenOperator == ' '){
-				chosenOperator = g.getCurrSelectedOperator();
-			}
-			System.out.println("Left the while loop");
+			char chosenOperator = input.next().charAt(0);
+
 			/* Error check */
-			if (!puzzle.puzzleBag.checkBag(chosenOperator)) {
+			/*if (!puzzle.puzzleBag.checkBag(chosenOperator)) {
 				System.err.println("Operator not in bag!");
 				continue;
 			}
@@ -47,15 +43,15 @@ public class Controller {
 			int chosenBoard = input.nextInt();
 
 			/* Error check */
-			if (chosenBoard < 0 || chosenBoard > 2 || puzzle.subArr[chosenBoard].isFull()) {
+			/*if (chosenBoard < 0 || chosenBoard > 2 || puzzle.subArr[chosenBoard].isFull()) {
 				System.err.println("Invalid board!");
 				continue;
 			}
 
 			/* Receive user input for which location */
+			
 			System.out.print("Select a location: ");
 			int chosenLocation = input.nextInt();
-
 			/* Error check */
 			if (chosenLocation < 0 || chosenLocation >= puzzle.subArr[chosenBoard].blocks.length) {
 				System.err.println("Location out of bounds!");
@@ -66,10 +62,10 @@ public class Controller {
 			if (!puzzle.subArr[chosenBoard].addBlock(chosenOperator, chosenLocation)) {
 				continue;
 			}
-
+			
+					
 			/* Remove the next instance of that operator */
 			puzzle.puzzleBag.removeNextInstance(chosenOperator);
-
 			/* Only check for success when everything is full */
 			if (puzzle.isPuzzleFull()) {
 				success = puzzle.isCorrect();
