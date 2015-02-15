@@ -58,7 +58,7 @@ public class GraphixTwo extends JPanel implements MouseListener{
 			
 			//now draw board 1
 			numBlocks = puzzle.getSecondBoardLength() + 2;
-			
+			g.setColor(Color.BLACK);
 			g.drawRect(50, 350, 95, 100);
 			g.setFont(new Font("SansSerif", Font.BOLD, 45));
 			g.drawString("" + puzzle.getSecondBoardStartNum(), 75, 400);
@@ -68,6 +68,7 @@ public class GraphixTwo extends JPanel implements MouseListener{
 			}
 			
 			//now draw the operator
+			g.setColor(Color.BLACK);
 			drawOperator(puzzle.getTheOperator(), 250, 250, g);
 			
 			//now the final subBoard
@@ -75,7 +76,7 @@ public class GraphixTwo extends JPanel implements MouseListener{
 			
 			g.drawRect(350 + sbArray[2].blocks.length*100, 250, 95, 100);
 			g.setFont(new Font("SansSerif", Font.BOLD, 45));
-			g.drawString("" + sbArray[2].startNum, 375 + sbArray[2].blocks.length*100, 300);
+			g.drawString("" + puzzle.getTheSolution(), 375 + sbArray[2].blocks.length*100, 300);
 			
 			for(int t = 0; t < sbArray[2].blocks.length; t++){
 				drawBlock(sbArray[2].blocks[t], 350 + 100*t, 250, g);
@@ -200,13 +201,31 @@ public class GraphixTwo extends JPanel implements MouseListener{
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
 		Point p = e.getPoint();
 		
 		if(restart){
-			//singleBoard.resetBoard();
+			puzzle.resetAllBoards();
 			currSelectedOperator = ' ';
 			positionOnBoard = -1;
 			restart = false;
+			puzzle.puzzleBag.resetBag();
 			if(won){
 				numMoves = 0;	
 				clearAll();
@@ -252,23 +271,6 @@ public class GraphixTwo extends JPanel implements MouseListener{
 		
 		repaint();
 	}
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -287,7 +289,7 @@ public class GraphixTwo extends JPanel implements MouseListener{
 	}
 	
 	private void clearAll(){
-		
+		System.out.println("clearAll");
 		numMoves = 0;
 		currSelectedOperator = ' ';
 		positionOnBoard = 4;
@@ -296,6 +298,10 @@ public class GraphixTwo extends JPanel implements MouseListener{
 		//singleBoard.resetBoard();
 		restart = false;
 		won = false;
+		puzzle = new Puzzle();
+		operatorBag = puzzle.puzzleBag;
+		sbArray = puzzle.subArr;
+		drawBoard();
 	}
 	
 }
