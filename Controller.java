@@ -12,28 +12,33 @@ public class Controller {
 		/* creates a new instance of 'puzzle' */
 		Puzzle puzzle = new Puzzle();
 		
-		/*
 		JFrame window = new JFrame();
 		Graphix g = new Graphix(puzzle);
 		window.setContentPane(g);
 		window.setSize(800, 600);
-		window.setVisible(true);*/
+		window.setVisible(true);
+		
+		g.drawBoard(new Board(10, 11, 3));
 
 		while (!success) {
 
 			/* print puzzle */
-			puzzle.displayPuzzle();
+			//puzzle.displayPuzzle();
 
 			/* Print the bag from which to draw from */
-			System.out.println("Select Operator from current Bag: ");
-			puzzle.puzzleBag.printBag();
+			/*System.out.println("Select Operator from current Bag: ");
+			puzzle.puzzleBag.printBag();*/
 
 			/* Receive user input for operator */
-			char chosenOperator = input.next().charAt(0);
-
+			//char chosenOperator = input.next().charAt(0);
+			char chosenOperator = ' ';
+			while(chosenOperator == ' '){
+				chosenOperator = g.getCurrSelectedOperator();
+			}
+			System.out.println("Left the while loop");
 			/* Error check */
 			if (!puzzle.puzzleBag.checkBag(chosenOperator)) {
-				System.err.println("\nOperator not in bag!\n");
+				System.err.println("Operator not in bag!");
 				continue;
 			}
 
@@ -43,7 +48,7 @@ public class Controller {
 
 			/* Error check */
 			if (chosenBoard < 0 || chosenBoard > 2 || puzzle.subArr[chosenBoard].isFull()) {
-				System.err.println("\nInvalid board!\n");
+				System.err.println("Invalid board!");
 				continue;
 			}
 
@@ -53,7 +58,7 @@ public class Controller {
 
 			/* Error check */
 			if (chosenLocation < 0 || chosenLocation >= puzzle.subArr[chosenBoard].blocks.length) {
-				System.err.println("\nLocation out of bounds!\n");
+				System.err.println("Location out of bounds!");
 				continue;
 			}
 
@@ -71,8 +76,8 @@ public class Controller {
 				if (!success) {
 					puzzle.puzzleBag.resetBag();
 					puzzle.resetAllBoards();
-					System.out.println("\nIncorrect answer!");
-					System.out.println("-----------------\n");
+					System.out.println("Incorrect answer!");
+					System.out.println("-----------------");
 				} else {
 					/* print boards */
 					puzzle.displayPuzzle();
