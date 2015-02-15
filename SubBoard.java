@@ -4,9 +4,7 @@
  */
 
 public class SubBoard extends Board {
-	// Block[] blocks;
-	// int startNum;
-	// int endNum;
+
 
 	/* Board constructor initializes an array of empty blocks into every space */
 	public SubBoard(int startNum, int endNum, int size) {

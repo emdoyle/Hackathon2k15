@@ -4,7 +4,7 @@ public class Operators {
 
 	public Operators(int size, char[] theOps) {
 		operators = theOps;
-		int currentIndex = 0;
+		currentIndex = 0;
 	}
 
 	public int evalOp(int valOne, int valTwo) {
