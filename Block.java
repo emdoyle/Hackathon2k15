@@ -31,6 +31,12 @@ public class Block {
 		case '-':
 			setColor("BLUE");
 			break;
+		case '^':
+			setColor("GREEN");
+			break;
+		case '|':
+			setColor("ORANGE");
+			break;
 		default:
 			setColor("BLACK");
 			empty = true;

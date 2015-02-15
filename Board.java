@@ -74,8 +74,15 @@ public class Board {
 			System.err.println("Invalid index!");
 		}
 
-		else if (!isFull()) {
+		else if (!isEmpty()) {
 			blocks[index].setUpBlock(' ');
+		}
+	}
+
+	/* reset the board and delete all the current blocks */
+	public void resetBoard() {
+		for (int i = 0; i < blocks.length; i++) {
+			deleteBlock(i);
 		}
 	}
 
@@ -91,6 +98,10 @@ public class Board {
 				return valOne * valTwo;
 			case '/':
 				return valOne / valTwo;
+			case '^':
+				return valOne * valOne;
+			case '|':
+				return valOne / 10;
 		}
 		return 0;
 	}

@@ -22,9 +22,18 @@ public class PuzzleCreator {
 		randomizeOperators();
 		subBoardArray = new SubBoard[(NUM_INPUTS*2)-1];
 		for(int i = 0; i < NUM_INPUTS; i++){ //loops through inputs and creates subBoards
-			createSubBoard(inputArray[i], rgen.nextInt(4));
+			createSubBoard(inputArray[i], rgen.nextInt(2)+1);
 			//subBoard has length up to (not including) 4
 		}
+
+		/* account for divide by zero */
+		while (subBoardArray[1].evaluateResult() == 0) {
+			
+			SubBoard newBoard = new SubBoard(subBoardArray[1].startNum, 0, subBoardArray[1].boardSize);
+			newBoard = randomizeBoard(newBoard, subBoardArray[1].boardSize);
+			subBoardArray[1] = newBoard;
+		}
+
 		int nextInput = evalOperator(subBoardArray[0].evaluateResult(),
 				subBoardArray[1].evaluateResult(),
 				operatorArray[0]);
@@ -41,6 +50,10 @@ public class PuzzleCreator {
 		}
 		inputArray = arr;
 	}
+
+	public char getOperator() {
+		return operatorArray[0];
+	}
 	
 	/* evaluates an operation based on the operator passed in and the two values */
 	private int evalOperator(int valOne, int valTwo, char operator) {
@@ -54,18 +67,48 @@ public class PuzzleCreator {
 				return valOne * valTwo;
 			case '/':
 				return valOne / valTwo;
+			case '^':
+				return valOne * valOne;
+			case '|':
+				return valOne / 10;
 		}
 		return 0;
 	}
 	
 	private char getRandomOperator(){
-		int randNum = rgen.nextInt(NUM_INPUTS);
+		int randNum = rgen.nextInt(9);
+		
+		if (randNum < 3) {
+			return '+';
+		}
+
+		else if (randNum < 6) {
+			return '-';
+		}
+
+		else if (randNum < 8) {
+			return '|';
+		}
+
+		else if (randNum < 9) {
+			return '^';
+		}
+
+		else return ' ';
+	}
+
+	private char getSubBoardOperator(){
+		int randNum = rgen.nextInt(4);
 		
 		switch(randNum){
 		case 0:
 			return '+';
 		case 1:
 			return '-';
+		case 2:
+			return '*';
+		case 3:
+			return '/';
 		default:
 			return ' ';
 		}
@@ -75,7 +118,7 @@ public class PuzzleCreator {
 		char[] arr = new char[NUM_INPUTS-1];
 
 		for(int i = 0; i < arr.length; i++){
-			arr[i] = getRandomOperator();
+			arr[i] = getSubBoardOperator();
 		}
 		operatorArray = arr;
 	}

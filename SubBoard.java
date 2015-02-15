@@ -20,6 +20,14 @@ public class SubBoard extends Board {
 		System.out.println();
 	}
 
+	public void printOnlyEnd(int result) {
+		// System.out.print(" | ");
+		for (int i = 0; i < blocks.length; i++) {
+			System.out.print(blocks[i].getOperator() + " | ");
+		}
+		System.out.println(result + " | ");
+	}
+
 	/* getter for total */
 	public int getTotal() {
 		return endNum;
