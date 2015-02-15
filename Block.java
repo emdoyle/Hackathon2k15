@@ -1,3 +1,5 @@
+import java.awt.Color;
+
 /*
  * Filename: Block.java
  * Description: Contains all info related to "blocks" which are the operators */
@@ -5,7 +7,7 @@
 public class Block {
 
 	/* color: for gui; empty: to determine if the block has been instantiated */
-	private String color;
+	private Color c;
 	private char operator;
 	private boolean empty;
 	
@@ -15,12 +17,12 @@ public class Block {
 		setEmpty(empty);
 	}
 	
-	public String getColor(){
-	  return color;
+	public Color getColor(){
+	  return c;
 	}
 	
-	private void setColor(String newColor){
-		color = newColor;
+	private void setColor(Color newColor){
+		c = newColor;
 	}
 	
 	public char getOperator(){
@@ -33,19 +35,19 @@ public class Block {
 		empty = false;
 		switch(newOperator){
 		case '+':
-			setColor("RED");
+			setColor(Color.RED);
 			break;
 		case '-':
-			setColor("BLUE");
+			setColor(Color.BLUE);
 			break;
 		case '^':
-			setColor("GREEN");
+			setColor(Color.GREEN);
 			break;
 		case '|':
-			setColor("ORANGE");
+			setColor(Color.ORANGE);
 			break;
 		default:
-			setColor("BLACK");
+			setColor(Color.BLACK);
 			empty = true;
 			break;
 		}
